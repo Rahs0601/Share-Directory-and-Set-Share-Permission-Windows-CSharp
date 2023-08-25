@@ -12,10 +12,12 @@ namespace ShareDirectory_and_SetPermission
 
         private static void Main(string[] args)
         {
-            Console.WriteLine(Path.GetDirectoryName(Application.ExecutablePath));
             // Share Folder
             Console.WriteLine("Enter the path of the folder to be shared");
             string path = Console.ReadLine();
+            //"""" from the path
+            //"\\AMIT-LT70\ShareFiles\ShareDirectory_and_SetPermission.exe" --> \\AMIT-LT70\ShareFiles\ShareDirectory_and_SetPermission.exe
+            path = path.Replace('"', ' ').Trim();
             string foldername;
             string Domain = Environment.UserDomainName;
             try
@@ -23,14 +25,14 @@ namespace ShareDirectory_and_SetPermission
                 foldername = path.Substring(path.LastIndexOf('\\') + 1);
                 ShareFolder(path, foldername, "Shared Folder");
                 AddPermissions(foldername, Domain, "Everyone");
+                Console.WriteLine("Press any key to exit");
+                _ = Console.ReadLine();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
                 throw;
             }
-            Console.WriteLine("Press any key to exit");
-            _ = Console.ReadLine();
         }
 
         public static void ShareFolder(string FolderPath, string ShareName, string Description)
@@ -109,7 +111,7 @@ namespace ShareDirectory_and_SetPermission
 
 
             // Step 3 - Getting the user Account Object
-            securityIdentfierObject = new ManagementObject(string.Format("Win32_SID.SID='{0}'", "S-1-3-0"));
+            securityIdentfierObject = new ManagementObject(string.Format("Win32_SID.SID='{0}'", "S-1-1-0"));
             securityIdentfierObject.Get();
 
 
